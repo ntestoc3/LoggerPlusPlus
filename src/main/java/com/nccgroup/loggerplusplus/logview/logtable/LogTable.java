@@ -75,6 +75,21 @@ public class LogTable extends JTable
             }
         }
 
+        this.sorter.setComparator(sortColumn, new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                try {
+                    Integer i1 = Integer.parseInt(s1);
+                    Integer i2 = Integer.parseInt(s2);
+                    return i1.compareTo(i2);
+                }
+                catch (NumberFormatException e){
+                    System.out.printf("table sort comparator error convert:%s, %s", s1, s2);
+                    return -1;
+                }
+            }
+        });
+
         this.getSelectionModel().addListSelectionListener(e -> {
             if(e.getValueIsAdjusting()) return;
             RequestViewerController requestViewerController = LogTable.this.controller.getLogViewController().getRequestViewerController();
